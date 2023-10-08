@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html></html>
+DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Calculator</title>
-    <form action="/data" method = "post">
-        <label for="number1">Number 1</label>
-        <p> <input type = "number" id = "number1" name = "Number1" /></p>
-        <label for="calc">Desired operation (From +, -, * or /)</label>
-        <p><input type = "text" id = "calc" name="calc" /></p>
-        <label for="number2">Number 2</label>
-        <p><input type = "number" id = "number2" name = "Number2" /></p>
-    <p><input type = "submit" value = "Submit" /></p>
-
-</form>
 </head>
 <body>
+    <h1>Calculator</h1>
 
+    <form methods = ["GET","POST"], action = "/calculator" target = "_self">
+        <label for ="number1">Number 1</label>
+        <input type="number" id = "number1" name="number1">
+        <label for ="calc">Calculation</label>
+        <input type = "text" id = "calc" name= "calc">
+        <label for ="number2">Number 2</label>
+        <input type="number" id = "number2" name="number2">
+        <button type="submit">Submit</button>
+    </form>
 
+    <div id="result">
+            Result: {{ result }}
+    </div>
+</body>
+</html>
