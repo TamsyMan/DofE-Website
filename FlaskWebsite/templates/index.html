@@ -7,13 +7,13 @@
     <h1>Calculator</h1>
 
     <form method="POST", action = "/calculator">
-        <label for ="number1">Number 1</label>
-        <input type="number" name="number1" id = "number1">
-        <label for ="calc">Calculation</label>
-        <input type = "text"  name= "calc" id = "calc">
-        <label for ="number2">Number 2</label>
-        <input type="number" name="number2" id = "number2">
-        <button type="submit">Submit</button>
+        {{form.Number1.label}}
+        {{form.Number1}}
+        {{form.Calculation.label}}
+        {{form.Calculation}}
+        {{form.Number2.label}}
+        {{form.Number2}}
+        {{form.Submit}}
     </form>
 </body>
 </html>
