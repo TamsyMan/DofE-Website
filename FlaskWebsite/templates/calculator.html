@@ -1,11 +1,21 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-    <title>Calculator Result</title>
+    <title>Calculator</title>
 </head>
 <body>
-    <h1>Calculator Result</h1>
-    <p>Result: {{ result }}</p>
-    <a href="/">Go Back</a>
+    <h1>Calculator</h1>
+
+    <form method="POST", action = "/calcresult">
+        {{form.Number1.label}}
+        {{form.Number1}}
+        {{form.Calculation.label}}
+        {{form.Calculation}}
+        {{form.Number2.label}}
+        {{form.Number2}}
+        {{form.Submit}}
+    </form>
 </body>
 </html>
+
+<a href="/">Go Back</a>

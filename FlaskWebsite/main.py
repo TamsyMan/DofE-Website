@@ -6,10 +6,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def initialise():
+    return render_template('index.html')
+
+
+@app.route('/calculator')
+def calculator():
     form = CalcForm(request.form)
-    return(render_template('index.html', form=form))
-@app.route('/calculator', methods = ["POST"])
-def calculate():
+    return render_template('calculator.html', form=form)
+
+@app.route('/calcresult', methods = ["POST"])
+def calcResult():
     try:
         number1 = int(request.form["Number1"])
         calc = request.form["Calculation"]
@@ -24,7 +30,7 @@ def calculate():
             result = (number1 / number2)
         else:
             result = "Not a valid sum"
-        return render_template('calculator.html', result=result)
+        return render_template('calcresult.html', result=result)
     except KeyError as error:
         return "Missing Form Field"
 
