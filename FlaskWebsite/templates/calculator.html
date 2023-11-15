@@ -6,7 +6,7 @@
 <body>
     <h1>Calculator</h1>
 
-    <form method="POST", action = "/calcresult">
+    <form method="POST", action = "/calculator">
         {{form.Number1.label}}
         {{form.Number1}}
         {{form.Calculation.label}}
@@ -15,7 +15,13 @@
         {{form.Number2}}
         {{form.Submit}}
     </form>
+    <h1>Result</h1>
+
+    {%if result%}
+        <p>Result = {{result}}</p>
+    {% endif %}
 </body>
+
 </html>
 
 <a href="/">Go Back</a>
