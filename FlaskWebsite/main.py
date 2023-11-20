@@ -12,7 +12,12 @@ def initialise():
     return render_template('index.html')
 
 
-@app.route('/calculator', methods = ["GET", "POST"])
+@app.route('/test', methods = ["GET", "POST"])
+def get_data():
+    data = {'key': 'value'}
+    return jsonify(data)
+
+@app.route('/calculator',  methods = ['GET', 'POST'])
 def calculator():
     form = CalcForm(request.form)
     result = None
@@ -35,21 +40,7 @@ def calculator():
             return "Missing Form Field"
     return render_template('calculator.html', form=form, result=result)
 
+
+
 app.run(debug=True)
-
-# @app.route('/api/clock', methods = ["GET", "POST"])
-# def clock():
-#     test = [
-#         { "Name": "Test",
-#           "Number": 1},
-#         { "Name": "Test2",
-#           "Number": 2}
-#     ]
-#     return jsonify(test)
-@app.route('/clockapi', methods=['GET'])
-def clockapi():
-    response = requests.get('http://127.0.0.1:5000/clockapi')
-    api_data = response.json()
-
-    return render_template('clockapi.html', api_data=api_data)
 
