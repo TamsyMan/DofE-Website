@@ -12,10 +12,17 @@ def initialise():
     return render_template('index.html')
 
 
-@app.route('/test', methods = ["GET", "POST"])
-def get_data():
-    data = {'key': 'value'}
-    return jsonify(data)
+@app.route('/clock', methods = ["GET", "POST"])
+def clock():
+    api_url = 'http://worldtimeapi.org/api/ip'
+    days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    response = requests.get(api_url)
+    data = response.json()
+
+    day_of_week = days_of_week[data.get('day_of_week')]
+    #Idea for next time: Create calculator that sees how many days until a given date?
+
+    return (render_template('clock.html', day_of_week = day_of_week))
 
 @app.route('/calculator',  methods = ['GET', 'POST'])
 def calculator():
