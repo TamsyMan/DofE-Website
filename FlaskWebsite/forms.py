@@ -5,3 +5,7 @@ class CalcForm(Form):
     Calculation=StringField('Calculation')
     Number2=IntegerField('Number 2')
     Submit=SubmitField('Submit')
+
+class YoutubeForm(Form):
+    topic = StringField('Topic')
+    submit=SubmitField('Submit')

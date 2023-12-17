@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
-from forms import CalcForm
-import requests
+from forms import CalcForm, YoutubeForm
+import requests, time
 
 
 app = Flask(__name__)
@@ -33,9 +33,6 @@ def find_time():
 
     return all_info
 
-@app.route('/')
-def initialise():
-    return render_template('index.html')
 
 def date_suffix_calculator():
     day = find_time()["day"]
@@ -55,6 +52,18 @@ def month_calculator():
     month = find_time()["month"]
     month = months[int(month)-1]
     return month
+
+@app.route('/')
+def initialise():
+    return render_template('index.html')
+
+@app.route("/video", methods = ["GET", "POST"])
+def video():
+    form = YoutubeForm(request.form)
+    video_play = "https://www.youtube.com/embed/NFw0HznpLlM?si=zxtArtVtCz9qcVmG"
+    if request.method == "POST":
+        search_term = request.form["topic"]
+    return render_template('video.html', video_play = video_play, form = form)
 @app.route('/clock', methods = ["GET", "POST"])
 def clock():
     time = find_time()["time"]
@@ -66,6 +75,8 @@ def clock():
     final_string = f"It is {time} on the {day}{suffix} of {month}, {year}. It is a {weekday}."
 
     return render_template('clock.html', final_string = final_string)
+
+
 
 @app.route('/calculator',  methods = ['GET', 'POST'])
 def calculator():
