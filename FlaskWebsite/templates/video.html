@@ -12,6 +12,10 @@
         {{form.submit}}
     </form>
 
-    <a> <iframe width="560" height="315" src={{video_play}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></a>
+    {%if video_play%}
+        <p><a> <iframe width="560" height="315" src={{video_play}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></a></p>
+    {% endif %}
 </body>
+<a href="/">Go Back</a>
 </html>
+

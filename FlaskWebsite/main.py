@@ -1,7 +1,9 @@
-from flask import Flask, request, render_template, jsonify
-from forms import CalcForm, YoutubeForm
-import requests, time
+import random
 
+from flask import Flask, request, render_template
+from forms import CalcForm, YoutubeForm
+import requests
+import googleapiclient.discovery
 
 app = Flask(__name__)
 
@@ -29,7 +31,8 @@ def find_time():
     days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     weekday = days_of_week[data.get("day_of_week")]
 
-    all_info = {"date": date, "time": time, "hour": hour, "min": minute, "second": second,"year": year, "month": month, "day": day, "weekday": weekday}
+    all_info = {"date": date, "time": time, "hour": hour, "min": minute, "second": second, "year": year, "month": month,
+                "day": day, "weekday": weekday}
 
     return all_info
 
@@ -47,24 +50,53 @@ def date_suffix_calculator():
 
     return suffix
 
+
 def month_calculator():
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November', 'December']
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December']
     month = find_time()["month"]
-    month = months[int(month)-1]
+    month = months[int(month) - 1]
     return month
+
 
 @app.route('/')
 def initialise():
     return render_template('index.html')
 
-@app.route("/video", methods = ["GET", "POST"])
+
+# @app.route("/video", methods = ["GET", "POST"])
+# def video():
+#     form = YoutubeForm(request.form)
+#     random_vid_number = random.randint(1, 25)
+#     print (random_vid_number)
+#     video_play = "https://www.youtube.com/embed/NFw0HznpLlM?si=zxtArtVtCz9qcVmG"
+
+@app.route("/video", methods=["GET", "POST"])
 def video():
     form = YoutubeForm(request.form)
-    video_play = "https://www.youtube.com/embed/NFw0HznpLlM?si=zxtArtVtCz9qcVmG"
+    video_play = None
     if request.method == "POST":
         search_term = request.form["topic"]
-    return render_template('video.html', video_play = video_play, form = form)
-@app.route('/clock', methods = ["GET", "POST"])
+        youtube = googleapiclient.discovery.build("youtube", "v3",
+                                                  developerKey="AIzaSyDlxNmbWJTuecjrOXVoAr-Ah9euV-qK4tE")
+
+        search_response = youtube.search().list(q=search_term, type="video", part="id", maxResults=25).execute()
+
+        video_ids = [item["id"]["videoId"] for item in search_response.get("items", [])]
+
+        if video_ids:
+            random_num = random.randint(0, 24)
+            print (random_num)
+            random_video_id = video_ids[random_num]
+            video_play = f"https://www.youtube.com/embed/{random_video_id}"
+
+    if video_play:
+        return render_template('video.html', video_play=video_play, form=form)
+    else:
+        return render_template('video.html',form=form)
+
+
+@app.route('/clock', methods=["GET", "POST"])
 def clock():
     time = find_time()["time"]
     day = find_time()["day"]
@@ -74,11 +106,10 @@ def clock():
     weekday = find_time()["weekday"]
     final_string = f"It is {time} on the {day}{suffix} of {month}, {year}. It is a {weekday}."
 
-    return render_template('clock.html', final_string = final_string)
+    return render_template('clock.html', final_string=final_string)
 
 
-
-@app.route('/calculator',  methods = ['GET', 'POST'])
+@app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
     form = CalcForm(request.form)
     result = None
@@ -102,6 +133,4 @@ def calculator():
     return render_template('calculator.html', form=form, result=result)
 
 
-
 app.run(debug=True)
-
