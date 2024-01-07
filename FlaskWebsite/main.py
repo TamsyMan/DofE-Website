@@ -75,18 +75,19 @@ def initialise():
 def video():
     form = YoutubeForm(request.form)
     video_play = None
+    video_ids = []
+
     if request.method == "POST":
         search_term = request.form["topic"]
-        youtube = googleapiclient.discovery.build("youtube", "v3",
-                                                  developerKey="AIzaSyDlxNmbWJTuecjrOXVoAr-Ah9euV-qK4tE")
+        youtube = googleapiclient.discovery.build("youtube", "v3", developerKey="AIzaSyDlxNmbWJTuecjrOXVoAr-Ah9euV-qK4tE")
 
         search_response = youtube.search().list(q=search_term, type="video", part="id", maxResults=25).execute()
 
-        video_ids = [item["id"]["videoId"] for item in search_response.get("items", [])]
+        for item in search_response.get("items", []):
+            video_ids.append(item["id"]["videoId"])
 
         if video_ids:
             random_num = random.randint(0, 24)
-            print (random_num)
             random_video_id = video_ids[random_num]
             video_play = f"https://www.youtube.com/embed/{random_video_id}"
 
