@@ -64,13 +64,6 @@ def initialise():
     return render_template('index.html')
 
 
-# @app.route("/video", methods = ["GET", "POST"])
-# def video():
-#     form = YoutubeForm(request.form)
-#     random_vid_number = random.randint(1, 25)
-#     print (random_vid_number)
-#     video_play = "https://www.youtube.com/embed/NFw0HznpLlM?si=zxtArtVtCz9qcVmG"
-
 @app.route("/video", methods=["GET", "POST"])
 def video():
     form = YoutubeForm(request.form)
@@ -132,6 +125,45 @@ def calculator():
         except KeyError as error:
             return "Missing Form Field"
     return render_template('calculator.html', form=form, result=result)
+
+@app.route('/TicTacToe', methods = ["GET", "POST"])
+def TicTacToe():
+
+    parts_of_board = {
+        "0,0": {"location": "0,0", "x": "0", "y": "0", "Status": " "},
+        "0,1": {"location": "0,1", "x": "0", "y": "1", "Status": " "},
+        "0,2": {"location": "0,0", "x": "0", "y": "2", "Status": " "},
+        "1,0": {"location": "0,0", "x": "1", "y": "0", "Status": " "},
+        "1,1": {"location": "0,0", "x": "1", "y": "1", "Status": " "},
+        "1,2": {"location": "0,0", "x": "1", "y": "2", "Status": " "},
+        "2,0": {"location": "0,0", "x": "2", "y": "0", "Status": " "},
+        "2,1": {"location": "0,0", "x": "2", "y": "1", "Status": " "},
+        "2,2": {"location": "0,0", "x": "2", "y": "2", "Status": " "}}
+    # o_tiles = []
+    # x_tiles = []
+    num_of_moves = 0
+    game_over = False
+    players = ["X", "O"]
+    while True:
+        if not game_over:
+            x_or_o = num_of_moves % 2
+            turn_to_move = players[x_or_o]
+            row_play = input("Pick a row")
+            column_play = input("Pick a column")
+            num_of_moves = num_of_moves + 1
+            move = row_play + "," + column_play
+            parts_of_board[move]["Status"] = turn_to_move
+            for i in range (0,3):
+                for j in range (0,3):
+                    square_to_print = str(i) + "," + str(j)
+                    print (parts_of_board[square_to_print]["Status"] + "|", end=" ")
+                print ("\n -----")
+#                 Need to do win detection and add web framework
+
+
+
+
+
 
 
 app.run(debug=True)
