@@ -127,20 +127,25 @@ def calculator():
     return render_template('calculator.html', form=form, result=result)
 
 @app.route('/TicTacToe', methods = ["GET", "POST"])
+
 def TicTacToe():
 
     parts_of_board = {
         "0,0": {"location": "0,0", "x": "0", "y": "0", "Status": " "},
         "0,1": {"location": "0,1", "x": "0", "y": "1", "Status": " "},
-        "0,2": {"location": "0,0", "x": "0", "y": "2", "Status": " "},
-        "1,0": {"location": "0,0", "x": "1", "y": "0", "Status": " "},
-        "1,1": {"location": "0,0", "x": "1", "y": "1", "Status": " "},
-        "1,2": {"location": "0,0", "x": "1", "y": "2", "Status": " "},
-        "2,0": {"location": "0,0", "x": "2", "y": "0", "Status": " "},
-        "2,1": {"location": "0,0", "x": "2", "y": "1", "Status": " "},
-        "2,2": {"location": "0,0", "x": "2", "y": "2", "Status": " "}}
-    # o_tiles = []
-    # x_tiles = []
+        "0,2": {"location": "0,2", "x": "0", "y": "2", "Status": " "},
+        "1,0": {"location": "1,0", "x": "1", "y": "0", "Status": " "},
+        "1,1": {"location": "1,1", "x": "1", "y": "1", "Status": " "},
+        "1,2": {"location": "1,2", "x": "1", "y": "2", "Status": " "},
+        "2,0": {"location": "2,0", "x": "2", "y": "0", "Status": " "},
+        "2,1": {"location": "2,1", "x": "2", "y": "1", "Status": " "},
+        "2,2": {"location": "2,2", "x": "2", "y": "2", "Status": " "}}
+    col_0 = []
+    col_1 = []
+    col_2 = []
+    row_0 = []
+    row_1 = []
+    row_2 = []
     num_of_moves = 0
     game_over = False
     players = ["X", "O"]
@@ -150,14 +155,31 @@ def TicTacToe():
             turn_to_move = players[x_or_o]
             row_play = input("Pick a row")
             column_play = input("Pick a column")
-            num_of_moves = num_of_moves + 1
             move = row_play + "," + column_play
-            parts_of_board[move]["Status"] = turn_to_move
+            if parts_of_board[move]["Status"] == " ":
+                parts_of_board[move]["Status"] = turn_to_move
+                num_of_moves = num_of_moves + 1
+            else:
+                print ("A tile is already there. Try again.")
             for i in range (0,3):
                 for j in range (0,3):
-                    square_to_print = str(i) + "," + str(j)
+                    square_to_print = f"{i},{j}"
                     print (parts_of_board[square_to_print]["Status"] + "|", end=" ")
                 print ("\n -----")
+            if ((parts_of_board["0,0"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,2"]["Status"]) and parts_of_board["1,1"]["Status"] != " ") or ((parts_of_board["0,2"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,0"]["Status"]) and parts_of_board["1,1"]["Status"] != " "):
+                print(f"{parts_of_board['1,1']['Status']} Is the winner")
+            # for i in range(0,3):
+            #     column_check = i
+            # for key, value in parts_of_board.items(c):
+            #     if value["x"] = column_check:
+            for i in range(0,3):
+                column_values = []
+                for col in range (0,3):
+                    column_values.append(parts_of_board[f"{i}, {col}"]["Status"]"])
+
+
+
+
 #                 Need to do win detection and add web framework
 
 
