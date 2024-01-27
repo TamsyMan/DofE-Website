@@ -172,13 +172,20 @@ def TicTacToe():
             #     column_check = i
             # for key, value in parts_of_board.items(c):
             #     if value["x"] = column_check:
-            for i in range(0,3):
-                column_values = []
-                for col in range (0,3):
-                    column_values.append(parts_of_board[f"{i}, {col}"]["Status"]"])
-
-
-
+            for col in range(0,3):
+                column_statuses = [
+                    parts_of_board[f"{row},{col}"]["Status"]
+                    for row in range(3)]
+                if all(status == column_statuses[0] and status != " " for status in column_statuses):
+                    print(f"{column_statuses[0]} is the winner")
+                    game_over = True
+            for row in range(0,3):
+                row_statuses = [
+                    parts_of_board[f"{row},{col}"]["Status"]
+                    for col in range(3)]
+                if all(status == row_statuses[0] and status != " " for status in row_statuses):
+                    print(f"{row_statuses[0]} is the winner")
+                    game_over = True
 
 #                 Need to do win detection and add web framework
 
