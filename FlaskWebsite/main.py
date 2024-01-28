@@ -123,7 +123,7 @@ def calculator():
                 result = (number1 / number2)
             else:
                 result = "Not a valid sum"
-        except KeyError as error:
+        except KeyError:
             return "Missing Form Field"
     return render_template('calculator.html', form=form, result=result)
 
@@ -147,43 +147,28 @@ game_assets = {
 @app.route('/TicTacToe', methods=["GET", "POST"])
 def TicTacToe():
     global game_assets
-    message = None
     form = TicTacToeForm(request.form)
     game_over = game_assets["game_over"]
-    # players = ["O", "X"]
-    # # turn = game_assets[turn]
     winner = game_assets["winner"]
     message = None
     while True:
-        if game_over == False:
-            if game_assets["0,0"]["Status"] != " " and game_assets["0,1"]["Status"] != " " and game_assets["0,2"]["Status"] != " " and game_assets["1,0"]["Status"] != " " and game_assets["1,1"]["Status"] != " " and game_assets["1,2"]["Status"] != " " and game_assets["2,0"]["Status"] != " " and game_assets["2,1"]["Status"] != " " and game_assets["2,2"]["Status"] != " " and winner == None:
+        if not game_over:
+            if game_assets["0,0"]["Status"] != " " and game_assets["0,1"]["Status"] != " " and game_assets["0,2"]["Status"] != " " and game_assets["1,0"]["Status"] != " " and game_assets["1,1"]["Status"] != " " and game_assets["1,2"]["Status"] != " " and game_assets["2,0"]["Status"] != " " and game_assets["2,1"]["Status"] != " " and game_assets["2,2"]["Status"] != " " and winner is None:
                 message = "This is a draw. Neither player wins."
             if request.method == "POST":
                 move = request.form["move"]
                 if game_assets[move]["Status"] == " ":
                     turn_to_move = game_assets["player"]
                     game_assets[move]["Status"] = turn_to_move
-                    # num_of_moves = game_assets["num_of_moves"] + 1
-                    # x_or_o = num_of_moves % 2
-                    # turn_to_move = players[x_or_o]
                     if turn_to_move == "O":
                         turn_to_move = "X"
                     else:
                         turn_to_move = "O"
                     game_assets["player"] = turn_to_move
-                    # game_assets["num_of_moves"] = num_of_moves
-                    # print(num_of_moves)
                 elif message != "This is a draw. Neither player wins.":
-                    # print("A tile is already there. Try again.")
                     message = "A tile is already there. Try again."
-                for i in range(0, 3):
-                    for j in range(0, 3):
-                        square_to_print = f"{i},{j}"
-                    #     print(game_assets[square_to_print]["Status"] + "|", end=" ")
-                    # print("\n -----")
                 if ((game_assets["0,0"]["Status"] == game_assets["1,1"]["Status"] == game_assets["2,2"]["Status"]) and game_assets["1,1"]["Status"] != " ") or ((game_assets["0,2"]["Status"] == game_assets["1,1"]["Status"] == game_assets["2,0"]["Status"]) and game_assets["1,1"]["Status"] != " "):
                     winner = game_assets['1,1']['Status']
-                    # print(f"{winner} Is the winner")
                     game_assets["winner"] = winner
                     game_assets["game_over"] = True
                 for col in range(0, 3):
@@ -192,7 +177,6 @@ def TicTacToe():
                         for row in range(3)]
                     if all(status == column_statuses[0] and status != " " for status in column_statuses):
                         winner = column_statuses[0]
-                        # print(f"{winner} is the winner")
                         game_assets["winner"] = winner
                         game_assets["game_over"] = True
                 for row in range(0, 3):
@@ -202,7 +186,6 @@ def TicTacToe():
                     if all(status == row_statuses[0] and status != " " for status in row_statuses):
                         winner = row_statuses[0]
                         game_assets["winner"] = winner
-                        # print(f"{winner} is the winner")
                         game_assets["game_over"] = True
         else:
             message = f"Game Over. {winner} is the winner"
