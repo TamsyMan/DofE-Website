@@ -1,7 +1,7 @@
 import random
 
 from flask import Flask, request, render_template
-from forms import CalcForm, YoutubeForm
+from forms import CalcForm, YoutubeForm, TicTacToeForm
 import requests
 import googleapiclient.discovery
 
@@ -129,7 +129,7 @@ def calculator():
 @app.route('/TicTacToe', methods = ["GET", "POST"])
 
 def TicTacToe():
-
+    form = TicTacToeForm(request.form)
     parts_of_board = {
         "0,0": {"location": "0,0", "x": "0", "y": "0", "Status": " "},
         "0,1": {"location": "0,1", "x": "0", "y": "1", "Status": " "},
@@ -139,59 +139,47 @@ def TicTacToe():
         "1,2": {"location": "1,2", "x": "1", "y": "2", "Status": " "},
         "2,0": {"location": "2,0", "x": "2", "y": "0", "Status": " "},
         "2,1": {"location": "2,1", "x": "2", "y": "1", "Status": " "},
-        "2,2": {"location": "2,2", "x": "2", "y": "2", "Status": " "}}
-    col_0 = []
-    col_1 = []
-    col_2 = []
-    row_0 = []
-    row_1 = []
-    row_2 = []
-    num_of_moves = 0
-    game_over = False
-    players = ["X", "O"]
-    while True:
-        if not game_over:
-            x_or_o = num_of_moves % 2
-            turn_to_move = players[x_or_o]
-            row_play = input("Pick a row")
-            column_play = input("Pick a column")
-            move = row_play + "," + column_play
-            if parts_of_board[move]["Status"] == " ":
-                parts_of_board[move]["Status"] = turn_to_move
-                num_of_moves = num_of_moves + 1
-            else:
-                print ("A tile is already there. Try again.")
-            for i in range (0,3):
-                for j in range (0,3):
-                    square_to_print = f"{i},{j}"
-                    print (parts_of_board[square_to_print]["Status"] + "|", end=" ")
-                print ("\n -----")
-            if ((parts_of_board["0,0"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,2"]["Status"]) and parts_of_board["1,1"]["Status"] != " ") or ((parts_of_board["0,2"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,0"]["Status"]) and parts_of_board["1,1"]["Status"] != " "):
-                print(f"{parts_of_board['1,1']['Status']} Is the winner")
-            # for i in range(0,3):
-            #     column_check = i
-            # for key, value in parts_of_board.items(c):
-            #     if value["x"] = column_check:
-            for col in range(0,3):
-                column_statuses = [
-                    parts_of_board[f"{row},{col}"]["Status"]
-                    for row in range(3)]
-                if all(status == column_statuses[0] and status != " " for status in column_statuses):
-                    print(f"{column_statuses[0]} is the winner")
-                    game_over = True
-            for row in range(0,3):
-                row_statuses = [
-                    parts_of_board[f"{row},{col}"]["Status"]
-                    for col in range(3)]
-                if all(status == row_statuses[0] and status != " " for status in row_statuses):
-                    print(f"{row_statuses[0]} is the winner")
-                    game_over = True
+        "2,2": {"location": "2,2", "x": "2", "y": "2", "Status": " "}
+    }
+    valid_moves = [(value["location"], value["location"]) for value in parts_of_board.values()]
 
-#                 Need to do win detection and add web framework
-
-
-
-
+    # num_of_moves = 0
+    # game_over = False
+    # players = ["X", "O"]
+    # while True:
+    #     if not game_over:
+    #         x_or_o = num_of_moves % 2
+    #         turn_to_move = players[x_or_o]
+    #         row_play = input("Pick a row")
+    #         column_play = input("Pick a column")
+    #         move = row_play + "," + column_play
+    #         if parts_of_board[move]["Status"] == " ":
+    #             parts_of_board[move]["Status"] = turn_to_move
+    #             num_of_moves = num_of_moves + 1
+    #         else:
+    #             print ("A tile is already there. Try again.")
+    #         for i in range (0,3):
+    #             for j in range (0,3):
+    #                 square_to_print = f"{i},{j}"
+    #                 print (parts_of_board[square_to_print]["Status"] + "|", end=" ")
+    #             print ("\n -----")
+    #         if ((parts_of_board["0,0"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,2"]["Status"]) and parts_of_board["1,1"]["Status"] != " ") or ((parts_of_board["0,2"]["Status"] == parts_of_board["1,1"]["Status"] == parts_of_board["2,0"]["Status"]) and parts_of_board["1,1"]["Status"] != " "):
+    #             print(f"{parts_of_board['1,1']['Status']} Is the winner")
+    #         for col in range(0,3):
+    #             column_statuses = [
+    #                 parts_of_board[f"{row},{col}"]["Status"]
+    #                 for row in range(3)]
+    #             if all(status == column_statuses[0] and status != " " for status in column_statuses):
+    #                 print(f"{column_statuses[0]} is the winner")
+    #                 game_over = True
+    #         for row in range(0,3):
+    #             row_statuses = [
+    #                 parts_of_board[f"{row},{col}"]["Status"]
+    #                 for col in range(3)]
+    #             if all(status == row_statuses[0] and status != " " for status in row_statuses):
+    #                 print(f"{row_statuses[0]} is the winner")
+    #                 game_over = True
+    return render_template('TicTacToe.html', parts_of_board = parts_of_board, form = form, valid_moves = valid_moves)
 
 
 

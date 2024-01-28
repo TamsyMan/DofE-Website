@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+        <style> pre {white-space: pre; font-size: 30px;}</style>
+</head>
+
+<form method="POST", action = "/TicTacToe">
+        {{form.move.label}}
+        {{form.move}}
+        {{form.submit}}
+    </form>
+
+<body>
+    <pre> {{parts_of_board["0,0"]["Status"]}} | {{parts_of_board["0,1"]["Status"]}} | {{parts_of_board["0,2"]["Status"]}}</pre>
+    <pre> ---------</pre>
+    <pre> {{parts_of_board["1,0"]["Status"]}} | {{parts_of_board["1,1"]["Status"]}} | {{parts_of_board["1,2"]["Status"]}}</pre>
+    <pre> ---------</pre>
+    <pre> {{parts_of_board["2,0"]["Status"]}} | {{parts_of_board["2,1"]["Status"]}} | {{parts_of_board["2,2"]["Status"]}}</pre>
+
+
+</body>
+</html>
