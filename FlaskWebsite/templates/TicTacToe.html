@@ -11,12 +11,15 @@
     </form>
 
 <body>
-    <pre> {{parts_of_board["0,0"]["Status"]}} | {{parts_of_board["0,1"]["Status"]}} | {{parts_of_board["0,2"]["Status"]}}</pre>
+    <pre> {{game_assets["0,0"]["Status"]}} | {{game_assets["0,1"]["Status"]}} | {{game_assets["0,2"]["Status"]}}</pre>
     <pre> ---------</pre>
-    <pre> {{parts_of_board["1,0"]["Status"]}} | {{parts_of_board["1,1"]["Status"]}} | {{parts_of_board["1,2"]["Status"]}}</pre>
+    <pre> {{game_assets["1,0"]["Status"]}} | {{game_assets["1,1"]["Status"]}} | {{game_assets["1,2"]["Status"]}}</pre>
     <pre> ---------</pre>
-    <pre> {{parts_of_board["2,0"]["Status"]}} | {{parts_of_board["2,1"]["Status"]}} | {{parts_of_board["2,2"]["Status"]}}</pre>
+    <pre> {{game_assets["2,0"]["Status"]}} | {{game_assets["2,1"]["Status"]}} | {{game_assets["2,2"]["Status"]}}</pre>
 
-
+<p> It is {{game_assets["player"]}}'s turn</p>
+{%if message%}
+        <p>{{message}}</p>
+    {% endif %}
 </body>
 </html>
