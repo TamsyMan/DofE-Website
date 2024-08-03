@@ -4,7 +4,10 @@ from flask import Flask, request, render_template
 from forms import CalcForm, YoutubeForm, TicTacToeForm
 import requests
 import googleapiclient.discovery
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 
 
@@ -73,7 +76,7 @@ def video():
     if request.method == "POST":
         search_term = request.form["topic"]
         youtube = googleapiclient.discovery.build("youtube", "v3",
-                                                  developerKey="AIzaSyDlxNmbWJTuecjrOXVoAr-Ah9euV-qK4tE")
+                                                  developerKey=(os.getenv("YOUTUBE_API_KEY")))
 
         search_response = youtube.search().list(q=search_term, type="video", part="id", maxResults=25).execute()
 
